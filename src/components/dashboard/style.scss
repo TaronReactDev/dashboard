@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  background-color: darkgray;
+}
+
+.navbar {
+  height: 150px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+
+  img {
+    width: 100px;
+  }
+}
+
+.menuContainer {
+  padding: 0;
+  width: 150px;
+  text-align: center;
+}
+
+.menuItem {
+  list-style: none;
+  border: 1px solid black;
+  height: 15px;
+  margin: 10px;;
+}
+
+.containerForDashboard {
+  display: flex;
+  height: 750px;
+
+}
+
+.dashboard {
+  background-color: lightcoral;
+  width: 100%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dashboardtable {
+  margin-top: 20px;
+  width: 100%;
+  border: 1px solid black;
+  text-align: center;
+  tr {
+    th, td {
+      border: 1px solid black;
+    }
+  }
+}
+
+
+
+.modalContainer{
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.modalContainer_background{
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.formContainer{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: antiquewhite;
+  padding: 10px;
+  width: 500px;
+  left: 150px;
+  border-radius: 20px;
+}

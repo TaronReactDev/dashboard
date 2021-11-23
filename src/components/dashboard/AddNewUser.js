@@ -14,13 +14,14 @@ import FormLabel from '@mui/material/FormLabel';
 import axios from "axios";
 
 
-const Registr = (props) => {
+const AddNewUser = ({handleCloseAddingNewUserModal}) => {
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [userName, setUserName] = useState("")
     const [dateOfBirth, setDateOfBirth] = useState("")
     const [gender, setGender] = useState("")
+    const [team, setTeam] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -60,6 +61,10 @@ const Registr = (props) => {
                 setGender(e.target.value);
                 break;
 
+            case "team" :
+                setTeam(e.target.value);
+                break;
+
             case "email" :
                 setEmail(e.target.value);
                 validation(email, "email") ? setErrorEmail(false) : setErrorEmail(true);
@@ -79,31 +84,59 @@ const Registr = (props) => {
 
     }
 
-    const handleRegistration = async () => {
+    const handleAddNewUser = async () => {
 
-            const registrationInfo = {
-                firstName,
-                lastName,
-                userName,
-                dateOfBirth,
-                gender,
-                email,
-                password
-            }
-            try {
-                const registration = await axios.post(`/api/user/register`, registrationInfo);
-                console.log()(registration.data.message)
+        const registrationInfo = {
+            firstName,
+            lastName,
+            userName,
+            dateOfBirth,
+            gender,
+            email,
+            password,
+            team
+        }
+        try {
+            const registration = await axios.post(`/api/user/register`, registrationInfo);
+            console.log()(registration.data.message)
 
-            } catch (e) {
-                console.error(e)
-            }
 
+            handleCancelAddingNewUser()
+
+        } catch (e) {
+            console.error(e)
         }
 
+    }
+
+
+    const handleCancelAddingNewUser = ()=>{
+
+        handleCloseAddingNewUserModal()
+        clearState()
+    }
+    const clearState = () => {
+        setFirstName("");
+        setLastName("");
+        setUserName("");
+        setDateOfBirth("");
+        setGender("");
+        setTeam("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+
+        setErrorFirstName("");
+        setErrorLastName("");
+        setErrorUserName("");
+        setErrorEmail("");
+        setErrorPassword("");
+        setErrorConfirmPassword("");
+    }
 
 
     return (
-        <>
+        <div className="formContainer">
             <Box
                 component="form"
                 sx={{
@@ -117,39 +150,48 @@ const Registr = (props) => {
                 <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
 
                     <TextField error={errorFirstName} label="First Name" variant="standard" value={firstName}
-                               onChange={handleChangeRegistration("firstName")} helperText={errorFirstName ? "first name can't be empty." : "" }
+                               onChange={handleChangeRegistration("firstName")}
+                               helperText={errorFirstName ? "first name can't be empty." : ""}
                     />
 
                     <TextField error={errorLastName} label="Last Name" variant="standard" value={lastName}
-                               onChange={handleChangeRegistration("lastName")} helperText={errorLastName ? "last name can't be empty." : ""}/>
+                               onChange={handleChangeRegistration("lastName")}
+                               helperText={errorLastName ? "last name can't be empty." : ""}/>
 
                     <TextField error={errorUserName} label="User Name" variant="standard" value={userName}
                                onChange={handleChangeRegistration("userName")}
-                               helperText={errorUserName ? "User name user name must be 3 or more characters" :""}
+                               helperText={errorUserName ? "User name user name must be 3 or more characters" : ""}
                     />
 
 
                     <TextField
-                               label="Birthday" variant="standard" value={dateOfBirth}
-                               type="date"
-                               defaultValue="2017-05-24"
-                               onChange={handleChangeRegistration("dateOfBirth")} autoComplete
-                               sx={{width: 220}}
-                               InputLabelProps={{
-                                   shrink: true,
-                               }}
+                        label="Birthday" variant="standard" value={dateOfBirth}
+                        type="date"
+                        defaultValue="2017-05-24"
+                        onChange={handleChangeRegistration("dateOfBirth")} autoComplete
+                        sx={{width: 220}}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
 
 
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Gender</FormLabel>
-                        <RadioGroup row aria-label="gender" name="row-radio-buttons-group" onChange={handleChangeRegistration("gender")}>
+                        <RadioGroup row aria-label="gender" name="row-radio-buttons-group"
+                                    onChange={handleChangeRegistration("gender")}>
 
                             <FormControlLabel value="female" control={<Radio/>} label="Female"/>
                             <FormControlLabel value="male" control={<Radio/>} label="Male"/>
                         </RadioGroup>
                     </FormControl>
 
+
+                    <TextField
+                        label="Team" variant="standard" value={team}
+                        onChange={handleChangeRegistration("team")}
+
+                    />
 
                     <TextField error={errorEmail}
                                label="Email" variant="standard" value={email}
@@ -182,14 +224,14 @@ const Registr = (props) => {
 
             <Stack spacing={2} direction="column">
                 <Button variant="text"
-                    onClick={handleRegistration} > REGISTR </Button>
-                <Button variant="text"> <Link to="/"> LOGIN </Link>  </Button>
+                        onClick={handleAddNewUser}> Add </Button>
+                <Button variant="text" onClick={handleCancelAddingNewUser}> Cancel </Button>
             </Stack>
-        </>
+        </div>
     );
 }
 
-export default Registr;
+export default AddNewUser;
 
 
 

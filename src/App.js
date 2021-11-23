@@ -1,7 +1,7 @@
 import Registr from "./components/registrationPage/registr"
 import LoginPage from "./components/loginPage/login"
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
-import AdminDashboard from "./components/adminDashboard/adminDashboard";
+import AdminDashboard from "./components/dashboard/Admin";
 
 
 function App() {

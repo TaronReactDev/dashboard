@@ -11,19 +11,18 @@ import {Redirect} from "react-router-dom";
 
 const LoginPage = (props) => {
 
-    const [email, setEmail] = useState("")
+    const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
 
-    const [errorEmail, setErrorEmail] = useState(false)
+    const [errorUserName, setErrorUserName] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)
 
     const [homePage, setHomePage] = useState(false)
 
     const handleChangeLogin = (type) => (e) => {
         switch (type) {
-            case "email":
-                setEmail(e.target.value);
-                validation(email, "email") ? setErrorEmail(false) : setErrorEmail(true);
+            case "userName":
+                setUserName(e.target.value);
                 break;
 
             case "password":
@@ -38,7 +37,7 @@ const LoginPage = (props) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         const LoginInfo = {
-            email,
+            userName,
             password
         }
         try {
@@ -70,7 +69,7 @@ const LoginPage = (props) => {
                     >
                         <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
 
-                            <TextField error={errorEmail} label="Email" variant="standard" value={email}
+                            <TextField error={errorUserName} label="User Name" variant="standard" value={userName}
                                        onChange={handleChangeLogin("email")}/>
 
                             <TextField

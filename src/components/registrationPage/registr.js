@@ -93,7 +93,7 @@ const Registr = (props) => {
               }
               try {
                   const registration = await axios.post(`/api/user/register`, registrationInfo);
-                  console.log()(registration.data.message)
+                  console.log(registration.data.message)
 
               } catch (e) {
                   console.error(e)

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Exit from "./../../icon/exit.png"
+import {Context} from "../../App";
+import {Redirect} from "react-router-dom";
 
 const Sidebar = (props) => {
-
+    const ProtectedContext = useContext(Context)
   const item = [ "item1", "item1" , "item1", "item1"]
 
     return (
@@ -13,7 +15,7 @@ const Sidebar = (props) => {
 
         </ul>
 
-            <img alt="exit" src={Exit} style={{width:"35px", height:"35px"}}/>
+            <img alt="exit" src={Exit} style={{width:"35px", height:"35px"}} onClick={()=>{ProtectedContext.push("/"); localStorage.setItem("token", "")}}/>
         </div>
     );
 }

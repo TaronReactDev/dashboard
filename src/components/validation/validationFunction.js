@@ -4,7 +4,7 @@ export let validation = (value, type) => {
 
 
     switch (type) {
-        case "userName" :
+        case "username" :
             return value.length > 3;
         case "email" :
             return patternEmail.test(value);
@@ -17,8 +17,6 @@ export let validation = (value, type) => {
             break;
     }
 
-    console.log(value)
-    console.log(type)
 
 
 }

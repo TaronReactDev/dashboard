@@ -5,7 +5,7 @@ import DeleteBtn from "./shared buttons/deleteBtn";
 
 const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
 
-    const {Id, firstName, lastName, userName, email, gender, birthday, team} = el;
+    const {Id, firstName, lastName, username, email, gender, birthday, team} = el;
 
 
     return (
@@ -13,7 +13,7 @@ const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{Id}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{firstName}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{lastName}</td>
-            <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{userName}</td>
+            <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{username}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{email}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{gender}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{birthday}</td>

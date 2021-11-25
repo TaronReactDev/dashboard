@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  background-color: darkgray;
+
 }
 
 .navbar {
@@ -12,38 +12,66 @@ body {
   justify-content: space-between;
   align-items: center;
   border: 1px solid black;
+  color: #E7DFD5;
+  font-size: large;
+  font-weight: bold;
+  background-color: #204051;
+
 
   img {
     width: 100px;
+    margin: 0 20px;
+
   }
 }
 
-.menuContainer {
+.menuContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 50px;
+
+}
+
+
+.menuUl_Container {
   padding: 0;
   width: 150px;
   text-align: center;
+  li{
+    margin: 5px;
+    color: #E7DFD5;
+
+  }
 }
 
 .menuItem {
   list-style: none;
   border: 1px solid black;
   height: 15px;
-  margin: 10px;;
+  padding: 10px;;
 }
 
 .containerForDashboard {
   display: flex;
   height: 750px;
+  background-color: #3B6978;
+
 
 }
 
 .dashboard {
-  background-color: lightcoral;
+  background-color: #E7DFD5;
   width: 100%;
   border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding: 10px;
+  overflow: auto;
+
+
 }
 
 .dashboardtable {
@@ -59,6 +87,12 @@ body {
 }
 
 
+
+
+.uniqueQuestionItemBtn{
+  display: flex;
+  justify-content: space-evenly;
+}
 
 .modalContainer{
   width: 100vw;
@@ -86,6 +120,6 @@ body {
   background-color: antiquewhite;
   padding: 10px;
   width: 500px;
-  left: 150px;
   border-radius: 20px;
+  align-items: center;
 }

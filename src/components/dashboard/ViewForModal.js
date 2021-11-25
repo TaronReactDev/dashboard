@@ -1,57 +1,40 @@
-import React from 'react';
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import FemaleAvatar from "../../icon/avatar.png"
+import MaleAvatar from "../../icon/man.png"
 
 
-const ViewForModal = ({viewOneUser}) => {
+export default function ViewForModal({viewOneUser}) {
     return (
 
-
         <div className="formContainer">
+        <Card sx={{ maxWidth: 345 }}>
+            <CardHeader
+                avatar={
+                    <Avatar  aria-label="recipe">
+                        {viewOneUser.gender === "male" ? <img src={MaleAvatar} style={{width:"30px"}}
+                            alt="avatar"/> : <img src={FemaleAvatar} alt="avatar" style={{width:"30px"}}/>}
+                    </Avatar>
+                }
+              title={viewOneUser.firstName + " " + viewOneUser.lastName}
+                subheader={viewOneUser.birthday}
+            />
 
-            <div className="modalItemContainer">
-                <span>Id </span>
-                <span>{viewOneUser.Id}</span>
+            <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                   username - {viewOneUser.username}
+                </Typography> <Typography variant="body2" color="text.secondary">
+                   Email - {viewOneUser.email}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Team - {viewOneUser.team}
+                </Typography>
+            </CardContent>
+                  </Card>
             </div>
-
-
-            <div className="modalItemContainer">
-                <span>firstName </span>
-                <span>{viewOneUser.firstName}</span>
-            </div>
-
-
-            <div className="modalItemContainer">
-                <span>lastName </span>
-                <span>{viewOneUser.lastName}</span>
-            </div>
-
-
-            <div className="modalItemContainer">
-                <span>userName </span>
-                <span>{viewOneUser.userName}</span>
-            </div>
-
-
-            <div className="modalItemContainer">
-                <span>email </span>
-                <span>{viewOneUser.email}</span>
-            </div>
-
-            <div className="modalItemContainer">
-                <span>birthday </span>
-                <span>{viewOneUser.birthday}</span>
-            </div>
-
-            <div className="modalItemContainer">
-                <span>gender </span>
-                <span>{viewOneUser.gender}</span>
-            </div>
-
-            <div className="modalItemContainer">
-                <span>team </span>
-                <span>{viewOneUser.team}</span>
-            </div>
-        </div>
     );
 }
-
-export default ViewForModal;

@@ -18,7 +18,7 @@ const Registr = (props) => {
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
-    const [userName, setUserName] = useState("")
+    const [username, setUsername] = useState("")
     const [dateOfBirth, setDateOfBirth] = useState("")
     const [gender, setGender] = useState("")
     const [email, setEmail] = useState("")
@@ -28,7 +28,7 @@ const Registr = (props) => {
 
     const [errorFirstName, setErrorFirstName] = useState("")
     const [errorLastName, setErrorLastName] = useState("")
-    const [errorUserName, setErrorUserName] = useState("")
+    const [errorUsername, setErrorUsername] = useState("")
     const [errorEmail, setErrorEmail] = useState("")
     const [errorPassword, setErrorPassword] = useState("")
     const [errorConfirmPassword, setErrorConfirmPassword] = useState("")
@@ -47,9 +47,9 @@ const Registr = (props) => {
 
                 break;
 
-            case "userName" :
-                setUserName(e.target.value);
-                validation(userName, "userName") ? setErrorUserName(false) : setErrorUserName(true);
+            case "username" :
+                setUsername(e.target.value);
+                validation(username, "username") ? setErrorUsername(false) : setErrorUsername(true);
                 break;
 
             case "dateOfBirth" :
@@ -81,22 +81,24 @@ const Registr = (props) => {
 
     const handleRegistration = async () => {
 
-            const registrationInfo = {
-                firstName,
-                lastName,
-                userName,
-                dateOfBirth,
-                gender,
-                email,
-                password
-            }
-            try {
-                const registration = await axios.post(`/api/user/register`, registrationInfo);
-                console.log()(registration.data.message)
 
-            } catch (e) {
-                console.error(e)
-            }
+              const registrationInfo = {
+                  firstName,
+                  lastName,
+                  username,
+                  dateOfBirth,
+                  gender,
+                  email,
+                  password
+              }
+              try {
+                  const registration = await axios.post(`/api/user/register`, registrationInfo);
+                  console.log()(registration.data.message)
+
+              } catch (e) {
+                  console.error(e)
+              }
+
 
         }
 
@@ -123,9 +125,9 @@ const Registr = (props) => {
                     <TextField error={errorLastName} label="Last Name" variant="standard" value={lastName}
                                onChange={handleChangeRegistration("lastName")} helperText={errorLastName ? "last name can't be empty." : ""}/>
 
-                    <TextField error={errorUserName} label="User Name" variant="standard" value={userName}
-                               onChange={handleChangeRegistration("userName")}
-                               helperText={errorUserName ? "User name user name must be 3 or more characters" :""}
+                    <TextField error={errorUsername} label="User Name" variant="standard" value={username}
+                               onChange={handleChangeRegistration("username")}
+                               helperText={errorUsername ? "User name user name must be 3 or more characters" :""}
                     />
 
 

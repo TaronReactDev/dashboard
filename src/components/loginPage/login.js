@@ -6,23 +6,22 @@ import Button from '@mui/material/Button';
 import {Link} from "react-router-dom"
 import axios from "axios";
 import {validation} from "./../validation/validationFunction";
-import {Redirect} from "react-router-dom";
-//import Profile from "./profile";
 
 const LoginPage = (props) => {
 
-    const [userName, setUserName] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const [errorUserName, setErrorUserName] = useState(false)
+    const [errorUsername, seterrorUsername] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)
 
     const [homePage, setHomePage] = useState(false)
 
     const handleChangeLogin = (type) => (e) => {
         switch (type) {
-            case "userName":
-                setUserName(e.target.value);
+            case "username":
+                setUsername(e.target.value);
+                validation(username, "username") ? seterrorUsername(false) : seterrorUsername(true);
                 break;
 
             case "password":
@@ -36,59 +35,59 @@ const LoginPage = (props) => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const LoginInfo = {
-            userName,
-            password
-        }
-        try {
-            const login = await axios.post(`/api/user/login`, LoginInfo)
-            if(login.data){
-                window.localStorage.setItem("auth", login.data)
-                setHomePage(true);
 
+        if(!errorUsername && !errorPassword && username.length !==0 && password.length !== 0){
+            const LoginInfo = {
+                username,
+                password
             }
+            try {
+                const login = await axios.post(`/api/user/login`, LoginInfo)
+                if (login.data) {
+                    window.localStorage.setItem("auth", login.data.token)
+                }
 
-        } catch (e) {
-            console.log(e)
+            } catch (e) {
+                console.error(e)
+            }
         }
+
+
     }
 
 
+    return (
 
-    return (<>
-            { homePage ?  "<Profile/>"
-                :
-                <>
-                    <Box
-                        component="form"
-                        sx={{
-                            '& .MuiTextField-root': {m: 1, width: '25ch'},
-                        }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
+        <>
+            <Box
+                component="form"
+                sx={{
+                    '& .MuiTextField-root': {m: 1, width: '25ch'},
+                }}
+                noValidate
+                autoComplete="off"
+            >
+                <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
 
-                            <TextField error={errorUserName} label="User Name" variant="standard" value={userName}
-                                       onChange={handleChangeLogin("email")}/>
+                    <TextField error={errorUsername} label="User Name" variant="standard" value={username}
+                               onChange={handleChangeLogin("username")}/>
 
-                            <TextField
-                                error={errorPassword}
-                                label="Password"
-                                type="password"
-                                variant="standard"
-                                value={password} onChange={handleChangeLogin("password")}
-                            />
-                        </div>
+                    <TextField
+                        error={errorPassword}
+                        label="Password"
+                        type="password"
+                        variant="standard"
+                        value={password} onChange={handleChangeLogin("password")}
+                    />
+                </div>
 
-                    </Box>
+            </Box>
 
-                    <Stack spacing={2} direction="column">
-                        <Button variant="text" onClick={handleLogin} >LOGIN</Button>
-                        <Button variant="text"> <Link to="/regitration">REGISTRATION </Link></Button>
-                    </Stack>
+            <Stack spacing={2} direction="column">
+                <Button variant="text" onClick={handleLogin}>LOGIN</Button>
+                <Button variant="text"> <Link to="/regitration">REGISTRATION </Link></Button>
+            </Stack>
 
-                </> }
 
         </>
     );

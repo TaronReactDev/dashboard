@@ -1,33 +1,37 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button} from "@mui/material";
 import DashboardHeader from "./DashboardHeader";
 import DashboardBody from "./DashboardBody";
 import Modal from "./Modal";
 import ViewForModal from "./ViewForModal";
 import AddNewUser from "./AddNewUser";
+import EditForModal from "./EditForModal";
+import axios  from "axios";
+
 
 const Dashboard = (props) => {
 
     const [userInfo, setUserInfo] = useState([{
         Id: 15,
-        firstName: 15,
-        lastName: 15,
-        userName: 15,
-        email: 15,
-        birthday: 15,
-        gender: 15,
-        team: 15,
+        firstName: "taron",
+        lastName: "sargsyan",
+        username: "taron1993",
+        email: "taron@gmail.com",
+        birthday: "2021-11-12",
+        gender: "male",
+        team: "intern",
 
     },
         {
-            Id: 125,
-            firstName: 152,
-            lastName: 152,
-            userName: 155,
-            email: 15,
-            birthday: 1455,
-            gender: 14525,
-            team: 15,
+            Id: 25,
+            firstName: "mane",
+            lastName: "sargsyan",
+            username: "mane200",
+            email: "taron@gmail.com",
+            birthday: "2010-01-12",
+            gender: "female",
+            team: "intern",
+
         }
     ])
 
@@ -35,13 +39,28 @@ const Dashboard = (props) => {
     const [editModalShow, setEditModalShow] = useState(false)
     const [viewModalShow, setViewModalShow] = useState(false)
 
-    const [editOrViewId, setEditOrViewId] = useState("");
-    const [editedUser, setEditedUser] = useState()
-    const [viewOneUser, setViewOneUser] = useState()
+ //   const [editOrViewId, setEditOrViewId] = useState("")
+    const [editedUser, setEditedUser] = useState("")
+    const [viewOneUser, setViewOneUser] = useState("")
+
+    useEffect(async ()=>{
+        try {
+            const data = await axios.get(`/api/user/login`)
+
+            setUserInfo(data)
+
+        } catch (e) {
+            console.error(e)
+        }
+
+    },[])
+
+
+
 
 
     const handleViewOrEdit = (id, actionType) => () => {
-        setEditOrViewId(id);
+        //setEditOrViewId(id);
         const filteredUser = userInfo.filter((el) => {
             return el.Id == id
         });
@@ -50,7 +69,7 @@ const Dashboard = (props) => {
             case "edit" :
                 setEditedUser(filteredUser[0]);
                 setEditModalShow(true);
-                setViewModalShow(false);
+               // setViewModalShow(false);
                 break;
             case  "view":
                 setViewOneUser(filteredUser[0]);
@@ -59,33 +78,32 @@ const Dashboard = (props) => {
     }
 
 
-    const handleAddNewUserModal = ()=>{
+    const handleAddNewUserModal = () => {
         setAddingModalShow(true)
     }
-
 
 
     const handleCancelBtn = (type) => () => {
         switch (type) {
             case "adding" :
                 setAddingModalShow((prev) => !prev);
-               // clearState();
                 break;
-            // case "edit" :
-            //     setEditModalShow((prev) => !prev);
-            //     clearState();
-            //     break;
+             case "edit" :
+                setEditModalShow((prev) => !prev);
+                 break;
             case "view" :
                 setViewModalShow((prev) => !prev);
-                // clearState();
                 break;
         }
     }
-    console.log(addingModalShow)
 
-
+//**********   API    *********************************************
     const handleDelete = () => {
     }
+
+//**********   API    *********************************************
+
+
 
 
     return (
@@ -109,23 +127,33 @@ const Dashboard = (props) => {
             <Modal modalShow={viewModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("view")}                    >
+                         onClick={handleCancelBtn("view")}>
                     </div>
                     <ViewForModal viewOneUser={viewOneUser}/>
                 </div>
 
             </Modal>
 
-  <Modal modalShow={addingModalShow}>
+            <Modal modalShow={addingModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("adding")}                    >
+                         onClick={handleCancelBtn("adding")}>
                     </div>
                     <AddNewUser handleCloseAddingNewUserModal={handleCancelBtn("adding")}/>
                 </div>
 
             </Modal>
 
+
+            <Modal modalShow={editModalShow}>
+                <div className="modalContainer">
+                    <div className="modalContainer_background"
+                         onClick={handleCancelBtn("edit")}>
+                    </div>
+                    <EditForModal handleCloseEditingUserModal={handleCancelBtn("edit")} editedUser={editedUser}/>
+                </div>
+
+            </Modal>
 
         </div>
     );

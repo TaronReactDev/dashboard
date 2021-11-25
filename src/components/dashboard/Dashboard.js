@@ -98,8 +98,24 @@ const Dashboard = (props) => {
     }
 
 //**********   API    *********************************************
-    const handleDelete = () => {
-    }
+    const handleDelete = (id) => {
+        try{
+            fetch("/api/admin/delete", {
+                method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({Id: id})
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
 
 //**********   API    *********************************************
 

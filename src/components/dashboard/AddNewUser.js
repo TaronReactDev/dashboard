@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -9,9 +9,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+
 import axios from "axios";
 
-const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
+const AddNewUser = ({handleCloseAddingNewUserModal}) => {
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -20,29 +21,20 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
     const [gender, setGender] = useState("")
     const [team, setTeam] = useState("")
     const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
 
     const [errorFirstName, setErrorFirstName] = useState("")
     const [errorLastName, setErrorLastName] = useState("")
     const [errorUsername, setErrorUsername] = useState("")
     const [errorEmail, setErrorEmail] = useState("")
+    const [errorPassword, setErrorPassword] = useState("")
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState("")
 
-    useEffect(() => {
-        const {firstName, lastName, username, birthday, gender, team, email} = editedUser;
+// *************   API    **********************
+    const handleAddNewUser = async () => {
 
-        setFirstName(firstName);
-        setLastName(lastName);
-        setUsername(username);
-        setDateOfBirth(birthday);
-        setGender(gender);
-        setTeam(team);
-        setEmail(email);
-
-    }, [])
-
-
-//**********   API    *********************************************
-
-    const handleSaveEdit = async () => {
         const registrationInfo = {
             firstName,
             lastName,
@@ -50,18 +42,21 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
             dateOfBirth,
             gender,
             email,
+            password,
             team
         }
-        console.log(registrationInfo)
         try {
             const registration = await axios.post(`/api/user/register`, registrationInfo);
             console.log()(registration.data.message)
-            handleCloseEditingUserModal()
+
+            handleCancelAddingNewUser()
         } catch (e) {
             console.error(e)
         }
+
     }
-//**********   API    *********************************************
+
+    // *************   API    **********************
 
     const handleChangeRegistration = (type) => (e) => {
         switch (type) {
@@ -73,7 +68,6 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
             case "lastName" :
                 setLastName(e.target.value);
                 e.target.value ? setErrorLastName(false) : setErrorLastName(true);
-
                 break;
 
             case "username" :
@@ -97,11 +91,21 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
                 setEmail(e.target.value);
                 validation(email, "email") ? setErrorEmail(false) : setErrorEmail(true);
                 break;
+
+            case "password" :
+                setPassword(e.target.value);
+                validation(password, "password") ? setErrorPassword(false) : setErrorPassword(true);
+                break;
+            case "confirmPassword" :
+                setConfirmPassword(e.target.value);
+                validation(confirmPassword, "confirmPassword") ? setErrorConfirmPassword(false) : setErrorConfirmPassword(true);
+                break;
         }
     }
 
-    const handleCloseEditingModal = () => {
-        handleCloseEditingUserModal()
+
+    const handleCancelAddingNewUser = () => {
+        handleCloseAddingNewUserModal()
         clearState()
     }
     const clearState = () => {
@@ -112,13 +116,15 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
         setGender("");
         setTeam("");
         setEmail("");
-
+        setPassword("");
+        setConfirmPassword("");
 
         setErrorFirstName("");
         setErrorLastName("");
         setErrorUsername("");
         setErrorEmail("");
-
+        setErrorPassword("");
+        setErrorConfirmPassword("");
     }
 
 
@@ -133,60 +139,85 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
                 autoComplete="off"
             >
                 <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
+
                     <TextField error={errorFirstName} label="First Name" variant="standard" value={firstName}
                                onChange={handleChangeRegistration("firstName")}
                                helperText={errorFirstName ? "first name can't be empty." : ""}
                     />
+
                     <TextField error={errorLastName} label="Last Name" variant="standard" value={lastName}
                                onChange={handleChangeRegistration("lastName")}
                                helperText={errorLastName ? "last name can't be empty." : ""}/>
+
                     <TextField error={errorUsername} label="User Name" variant="standard" value={username}
                                onChange={handleChangeRegistration("username")}
                                helperText={errorUsername ? "User name user name must be 3 or more characters" : ""}
                     />
+
                     <TextField
                         label="Birthday" variant="standard" value={dateOfBirth}
                         type="date"
-                        defaultValue={dateOfBirth}
+                        defaultValue="2017-05-24"
                         onChange={handleChangeRegistration("dateOfBirth")} autoComplete
                         sx={{width: 220}}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
+
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Gender</FormLabel>
                         <RadioGroup row aria-label="gender" name="row-radio-buttons-group"
                                     onChange={handleChangeRegistration("gender")}>
 
-                            <FormControlLabel value="female" control={<Radio/>} label="Female"
-                                              checked={gender === "female" ? true : false}/>
-                            <FormControlLabel value="male" control={<Radio/>} label="Male"
-                                              checked={gender === "male" ? true : false}/>
+                            <FormControlLabel value="female" control={<Radio/>} label="Female"/>
+                            <FormControlLabel value="male" control={<Radio/>} label="Male"/>
                         </RadioGroup>
                     </FormControl>
+
                     <TextField
                         label="Team" variant="standard" value={team}
                         onChange={handleChangeRegistration("team")}
+
                     />
+
                     <TextField error={errorEmail}
                                label="Email" variant="standard" value={email}
                                onChange={handleChangeRegistration("email")}
                                helperText={errorEmail ? "invalid email address" : ""}
+
+                    />
+                    <TextField
+                        error={errorPassword}
+                        label="Password"
+                        type="password"
+                        variant="standard"
+                        value={password} onChange={handleChangeRegistration("password")}
+                        helperText={errorPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
+                    />
+                    <TextField
+                        error={errorConfirmPassword}
+                        label="Confirm Password"
+                        type="password"
+                        variant="standard"
+                        value={confirmPassword} onChange={handleChangeRegistration("confirmPassword")}
+                        helperText={errorConfirmPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
+
                     />
                 </div>
+
             </Box>
 
             <Stack spacing={2} direction="column">
                 <Button variant="text"
-                        onClick={handleSaveEdit}> Save Edit </Button>
-                <Button variant="text" onClick={handleCloseEditingModal}> Cancel </Button>
+                        onClick={handleAddNewUser}> Add </Button>
+                <Button variant="text" onClick={handleCancelAddingNewUser}> Cancel </Button>
             </Stack>
         </div>
     );
 }
 
-export default EditForModal;
+export default AddNewUser;
 
 
 

@@ -3,12 +3,10 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar"
 import Dashboard from "./Dashboard";
 
-const User = (props) => {
+const Index = (props) => {
     return (
         <div>
             <Navbar/>
-
-
             <div className="containerForDashboard">
                 <Sidebar/>
                 <Dashboard/>
@@ -18,4 +16,4 @@ const User = (props) => {
     );
 }
 
-export default User;
+export default Index;

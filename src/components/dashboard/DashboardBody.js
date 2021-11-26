@@ -9,7 +9,8 @@ const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
 
 
     return (
-        <tr>
+        <tr >
+
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{Id}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{firstName}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{lastName}</td>
@@ -19,15 +20,15 @@ const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{birthday}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{team}</td>
 
+            {
+                true ?   <td className="uniqueQuestionItemBtn" >
+                    <EditBtn text="edit" id={Id} handleViewOrEdit={handleViewOrEdit} type="edit"/>
+                    <DeleteBtn text="Del" handleDelete={handleDelete} id={Id}/>
+                </td> :""
+            }
 
-
-
-
-            <td className="uniqueQuestionItemBtn">
-                <EditBtn text="edit" id={Id} handleViewOrEdit={handleViewOrEdit} type="edit"/>
-                <DeleteBtn text="Del" handleDelete={handleDelete} id={Id}/>
-            </td>
         </tr>
+
     );
 }
 

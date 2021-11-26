@@ -44,7 +44,6 @@ const Registr = (props) => {
             case "lastName" :
                 setLastName(e.target.value);
                 e.target.value ? setErrorLastName(false) : setErrorLastName(true);
-
                 break;
 
             case "username" :
@@ -75,8 +74,6 @@ const Registr = (props) => {
                 break;
 
         }
-
-
     }
 
     const handleRegistration = async () => {
@@ -98,11 +95,7 @@ const Registr = (props) => {
               } catch (e) {
                   console.error(e)
               }
-
-
         }
-
-
 
     return (
         <>
@@ -113,8 +106,6 @@ const Registr = (props) => {
                 }}
                 noValidate
                 autoComplete="off"
-
-
             >
                 <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
 
@@ -130,7 +121,6 @@ const Registr = (props) => {
                                helperText={errorUsername ? "User name user name must be 3 or more characters" :""}
                     />
 
-
                     <TextField
                                label="Birthday" variant="standard" value={dateOfBirth}
                                type="date"
@@ -142,22 +132,18 @@ const Registr = (props) => {
                                }}
                     />
 
-
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Gender</FormLabel>
                         <RadioGroup row aria-label="gender" name="row-radio-buttons-group" onChange={handleChangeRegistration("gender")}>
-
                             <FormControlLabel value="female" control={<Radio/>} label="Female"/>
                             <FormControlLabel value="male" control={<Radio/>} label="Male"/>
                         </RadioGroup>
                     </FormControl>
 
-
                     <TextField error={errorEmail}
                                label="Email" variant="standard" value={email}
                                onChange={handleChangeRegistration("email")}
                                helperText={errorEmail ? "invalid email address" : ""}
-
                     />
 
                     <TextField
@@ -168,6 +154,7 @@ const Registr = (props) => {
                         value={password} onChange={handleChangeRegistration("password")}
                         helperText={errorPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
                     />
+
                     <TextField
                         error={errorConfirmPassword}
                         label="Confirm Password"
@@ -175,13 +162,10 @@ const Registr = (props) => {
                         variant="standard"
                         value={confirmPassword} onChange={handleChangeRegistration("confirmPassword")}
                         helperText={errorConfirmPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
-
                     />
+
                 </div>
-
             </Box>
-
-
             <Stack spacing={2} direction="column">
                 <Button variant="text"
                     onClick={handleRegistration} > REGISTR </Button>

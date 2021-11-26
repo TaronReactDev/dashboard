@@ -6,7 +6,7 @@ import Modal from "./Modal";
 import ViewForModal from "./ViewForModal";
 import AddNewUser from "./AddNewUser";
 import EditForModal from "./EditForModal";
-import axios  from "axios";
+import axios from "axios";
 
 
 const Dashboard = (props) => {
@@ -39,28 +39,11 @@ const Dashboard = (props) => {
     const [editModalShow, setEditModalShow] = useState(false)
     const [viewModalShow, setViewModalShow] = useState(false)
 
- //   const [editOrViewId, setEditOrViewId] = useState("")
     const [editedUser, setEditedUser] = useState("")
     const [viewOneUser, setViewOneUser] = useState("")
 
-    useEffect(async ()=>{
-        try {
-            const data = await axios.get(`/api/user/login`)
-
-            setUserInfo(data)
-
-        } catch (e) {
-            console.error(e)
-        }
-
-    },[])
-
-
-
-
 
     const handleViewOrEdit = (id, actionType) => () => {
-        //setEditOrViewId(id);
         const filteredUser = userInfo.filter((el) => {
             return el.Id == id
         });
@@ -69,7 +52,6 @@ const Dashboard = (props) => {
             case "edit" :
                 setEditedUser(filteredUser[0]);
                 setEditModalShow(true);
-               // setViewModalShow(false);
                 break;
             case  "view":
                 setViewOneUser(filteredUser[0]);
@@ -88,9 +70,9 @@ const Dashboard = (props) => {
             case "adding" :
                 setAddingModalShow((prev) => !prev);
                 break;
-             case "edit" :
+            case "edit" :
                 setEditModalShow((prev) => !prev);
-                 break;
+                break;
             case "view" :
                 setViewModalShow((prev) => !prev);
                 break;
@@ -98,28 +80,27 @@ const Dashboard = (props) => {
     }
 
 //**********   API    *********************************************
-    const handleDelete = (id) => {
-        try {
-            fetch("/api/admin/delete", {
-                method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-                body: JSON.stringify({Id: id})
-            })
-        } catch (e) {
-            console.log(e)
-        }
+    const handleDelete = (id)  => {
+        console.log(id)
+        // try {
+        //     fetch("/api/admin/delete", {
+        //         method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+        //         mode: 'cors', // no-cors, *cors, same-origin
+        //         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        //         credentials: 'same-origin', // include, *same-origin, omit
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         redirect: 'follow',
+        //         referrerPolicy: 'no-referrer',
+        //         body: JSON.stringify({Id: id})
+        //     })
+        // } catch (e) {
+        //     console.log(e)
+        // }
     }
 
 //**********   API    *********************************************
-
-
 
 
     return (
@@ -135,7 +116,7 @@ const Dashboard = (props) => {
                 {userInfo.map(el => {
                     return <DashboardBody
                         key={el.Id}
-                        el={el} handleDelete={handleDelete} handleViewOrEdit={handleViewOrEdit}/>
+                        el={el} handleDelete={() => handleDelete(el.Id)} handleViewOrEdit={handleViewOrEdit}/>
                 })}
             </table>
 

@@ -6,10 +6,7 @@ const Modal = ({modalShow, children}) => {
         return null
     } else {
         return (
-
             <>   {children} </>
-
-
         );
     }
 }

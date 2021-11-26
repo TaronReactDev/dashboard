@@ -11,6 +11,7 @@ const DashboardHeader = (props) => {
             <th> Gender</th>
             <th> Birthday</th>
             <th> Team</th>
+            {true ?  <th> Action</th> : ""}
         </tr>
     );
 }

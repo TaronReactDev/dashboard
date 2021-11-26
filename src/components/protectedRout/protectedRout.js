@@ -1,23 +1,22 @@
 import React, {useContext} from 'react';
 import {Route, Redirect} from "react-router-dom";
+import {Context} from "../../App";
 
 const ProtectedRout =({isAuth, Component, ...rest})=> {
 
+    const {token} = useContext(Context)
     return (
         <Route {...rest} render = {(props) =>
+
+
         {
+            console.log(rest, "rest")
             if(isAuth){
-
-
-                  return <Component {...props}/>
-
-
+                return  token ? <Component {...props}/> : <Redirect to="/" />
             }else {
-             return  <Redirect to="/" />
+             return  token ?  <Component {...props}/> : <Redirect to="/" />
             }
         }}/>
-
-
     );
 }
 

@@ -1,29 +1,36 @@
 import Registr from "./components/registrationPage/registr"
 import LoginPage from "./components/loginPage/login"
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
+import {BrowserRouter as Router, Switch, Route, useHistory, Redirect} from "react-router-dom"
 import AdminDashboard from "./components/dashboard";
 import ProtectedRoute from "./components/protectedRout/protectedRout";
-import {createContext, useEffect, useState} from "react";
+import {createContext,  useState} from "react";
 
 export const Context = createContext(null);
 
 
 function App() {
 
-    const [token, setToken] = useState(localStorage.token)
-    const [userData, setUserData] = useState()
+    const history = useHistory()
 
+    const [token, setToken] = useState(!!localStorage.getItem("token"))
 
-    console.log("local", localStorage.token)
 
     return (
 
         <Router>
             <Switch>
-                <Context.Provider value={{setToken, token, setUserData}}>
-                    <ProtectedRoute path="/" isAuth  exact Component={<LoginPage/>}/>
-                    <ProtectedRoute path="/registration" isAuth Component={<Registr/>}/>
-                    <ProtectedRoute path="/admin"   Component={AdminDashboard}/>
+                <Context.Provider value={{token, history}}>
+
+                    { localStorage.getItem("token") ?
+                        <ProtectedRoute path="/admin" Component={AdminDashboard}/>
+
+                        :  <Route path="/" exact> <LoginPage/> </Route>}
+
+
+                        <Route path="/registration"  > <registration/> </Route>
+
+
+
                 </Context.Provider>
             </Switch>
         </Router>

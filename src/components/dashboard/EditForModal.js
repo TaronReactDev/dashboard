@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -10,9 +10,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import axios from "axios";
+import {DataContext} from "./index";
 
 const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
-
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("")
@@ -27,12 +27,12 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
     const [errorEmail, setErrorEmail] = useState("")
 
     useEffect(() => {
-        const {firstName, lastName, username, birthday, gender, team, email} = editedUser;
+        const {Id, firstName, lastName, username, dateOfBirth, gender, team, email} = editedUser;
 
         setFirstName(firstName);
         setLastName(lastName);
         setUsername(username);
-        setDateOfBirth(birthday);
+        setDateOfBirth(dateOfBirth);
         setGender(gender);
         setTeam(team);
         setEmail(email);
@@ -43,7 +43,8 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
 //**********   API    *********************************************
 
     const handleSaveEdit = async () => {
-        const registrationInfo = {
+        const editInfo = {
+            Id: editedUser.Id,
             firstName,
             lastName,
             username,
@@ -53,9 +54,9 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
             team
         }
         try {
-            const registration = await axios.post(`/api/user/register`, registrationInfo);
-            console.log()(registration.data.message)
+            const edit = await axios.put(`/api/admin/edit`, editInfo);
             handleCloseEditingUserModal()
+            window.location.reload();
         } catch (e) {
             console.error(e)
         }
@@ -157,9 +158,9 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
                                     onChange={handleChangeRegistration("gender")}>
 
                             <FormControlLabel value="female" control={<Radio/>} label="Female"
-                                              checked={gender === "female" ? true : false}/>
+                                              checked={gender.toLowerCase() === "female" ? true : false}/>
                             <FormControlLabel value="male" control={<Radio/>} label="Male"
-                                              checked={gender === "male" ? true : false}/>
+                                              checked={gender.toLowerCase() === "male" ? true : false}/>
                         </RadioGroup>
                     </FormControl>
                     <TextField
@@ -184,6 +185,3 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
 }
 
 export default EditForModal;
-
-
-

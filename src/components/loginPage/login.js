@@ -6,20 +6,15 @@ import Button from '@mui/material/Button';
 import {Link} from "react-router-dom"
 import axios from "axios";
 import {validation} from "./../validation/validationFunction";
-import {Context} from "../../App";
-import { useHistory } from "react-router-dom";
 
-const LoginPage = ({handle}) => {
-    const history = useHistory();
+
+const LoginPage = () => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
     const [errorUsername, setErrorUsername] = useState(false)
     const [errorPassword, setErrorPassword] = useState(false)
-
-    const {setUserData, setToken} = useContext(Context)
-
 
     const handleChangeLogin = (type) => (e) => {
         switch (type) {
@@ -31,30 +26,35 @@ const LoginPage = ({handle}) => {
             case "password":
                 setPassword(e.target.value);
                 validation(password, "password") ? setErrorPassword(false) : setErrorPassword(true);
-
                 break;
 
         }
     }
 
     const handleLogin = async (e) => {
-        e.preventDefault();
+         e.preventDefault();
 
-            const LoginInfo = {
-                username,
-                password
-            }
-            try {
-                const login = await axios.post(`/api/user/login`, LoginInfo)
-                if (login.data) {
-                    window.localStorage.setItem("token", login.data.token)
-                    setUserData(login.data)
-                    history.push("/admin");
-                }
+        const LoginInfo = {
+            username,
+            password
+        }
+        try {
+            const login = await axios.post(`/api/user/login`, LoginInfo)
+            if (login.data) {
+                window.localStorage.setItem("token", login.data.token)
 
-            } catch (e) {
-                console.error(e)
+
+               if( username &&  password) {
+                   window.location.pathname = "/admin"
+               }
+
+
+
             }
+
+        } catch (e) {
+            console.error(e)
+        }
     }
 
 
@@ -85,7 +85,7 @@ const LoginPage = ({handle}) => {
             </Box>
 
             <Stack spacing={2} direction="column">
-                <Button variant="text" onClick={handleLogin } >LOGIN</Button>
+                <Button variant="text" onClick={handleLogin}>LOGIN</Button>
                 <Button variant="text"> <Link to="/registration">REGISTRATION </Link></Button>
             </Stack>
 

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import EditBtn from "./shared buttons/editBtn";
 import DeleteBtn from "./shared buttons/deleteBtn";
+import {DataContext} from "./index";
 
 
-const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
+const DashboardBody = ({ el, handleViewOrEdit, handleDelete, isAdmin}) => {
 
-    const {Id, firstName, lastName, username, email, gender, birthday, team} = el;
 
+
+    const {Id, firstName, lastName, username, email, gender, dateOfBirth, team} = el;
 
     return (
         <tr >
@@ -17,11 +19,11 @@ const DashboardBody = ({ el, handleViewOrEdit, handleDelete}) => {
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{username}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{email}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{gender}</td>
-            <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{birthday}</td>
+            <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{dateOfBirth}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{team}</td>
 
             {
-                true ?   <td className="uniqueQuestionItemBtn" >
+                isAdmin ?   <td className="uniqueQuestionItemBtn" >
                     <EditBtn text="edit" id={Id} handleViewOrEdit={handleViewOrEdit} type="edit"/>
                     <DeleteBtn text="Del" handleDelete={handleDelete} id={Id}/>
                 </td> :""

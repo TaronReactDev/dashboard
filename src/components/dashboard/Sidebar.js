@@ -6,11 +6,10 @@ const Sidebar = (props) => {
 
   const item = [ "item1", "item1" , "item1", "item1"]
 
-    const {handleIsAuth, handleToken} = useContext(Context)
-    const handleExit =()=>{
-          handleIsAuth(false)
-        handleToken(false)
 
+    const handleExit =()=>{
+localStorage.setItem("token", "")
+        window.location.pathname = "/"
     }
 
     return (

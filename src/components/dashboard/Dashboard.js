@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Button} from "@mui/material";
 import DashboardHeader from "./DashboardHeader";
 import DashboardBody from "./DashboardBody";
@@ -7,33 +7,14 @@ import ViewForModal from "./ViewForModal";
 import AddNewUser from "./AddNewUser";
 import EditForModal from "./EditForModal";
 import axios from "axios";
+import {DataContext} from "./index";
 
 
 const Dashboard = (props) => {
 
-    const [userInfo, setUserInfo] = useState([{
-        Id: 15,
-        firstName: "taron",
-        lastName: "sargsyan",
-        username: "taron1993",
-        email: "taron@gmail.com",
-        birthday: "2021-11-12",
-        gender: "male",
-        team: "intern",
+    const {userInfo} = useContext(DataContext)
+    console.log(userInfo)
 
-    },
-        {
-            Id: 25,
-            firstName: "mane",
-            lastName: "sargsyan",
-            username: "mane200",
-            email: "taron@gmail.com",
-            birthday: "2010-01-12",
-            gender: "female",
-            team: "intern",
-
-        }
-    ])
 
     const [addingModalShow, setAddingModalShow] = useState(false)
     const [editModalShow, setEditModalShow] = useState(false)
@@ -44,12 +25,13 @@ const Dashboard = (props) => {
 
 
     const handleViewOrEdit = (id, actionType) => () => {
-        const filteredUser = userInfo.filter((el) => {
+        const filteredUser = userInfo.data.filter((el) => {
             return el.Id == id
         });
 
         switch (actionType) {
             case "edit" :
+                console.log(filteredUser[0])
                 setEditedUser(filteredUser[0]);
                 setEditModalShow(true);
                 break;
@@ -82,41 +64,47 @@ const Dashboard = (props) => {
 //**********   API    *********************************************
     const handleDelete = (id)  => {
         console.log(id)
-        // try {
-        //     fetch("/api/admin/delete", {
-        //         method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-        //         mode: 'cors', // no-cors, *cors, same-origin
-        //         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        //         credentials: 'same-origin', // include, *same-origin, omit
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         redirect: 'follow',
-        //         referrerPolicy: 'no-referrer',
-        //         body: JSON.stringify({Id: id})
-        //     })
-        // } catch (e) {
-        //     console.log(e)
-        // }
+        try {
+            fetch("/api/admin/delete", {
+                method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({Id: id})
+            })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
 //**********   API    *********************************************
 
 
+    // const asd =  userInfo.isAdmin ? userInfo.data : [userInfo.teamIfo]
+
+
     return (
         <div className="dashboard">
 
-            <Button variant="contained" onClick={handleAddNewUserModal}>
+            {userInfo.isAdmin ?    <Button variant="contained" onClick={handleAddNewUserModal}>
                 +add new user
-            </Button>
+            </Button> : ""}
 
 
             <table className="dashboardtable">
                 <DashboardHeader/>
-                {userInfo.map(el => {
+
+
+
+                {userInfo.data.map(el => {
                     return <DashboardBody
                         key={el.Id}
-                        el={el} handleDelete={() => handleDelete(el.Id)} handleViewOrEdit={handleViewOrEdit}/>
+                        el={el} handleDelete={() => handleDelete(el.Id)} handleViewOrEdit={handleViewOrEdit} isAdmin = {userInfo.isAdmin}/>
                 })}
             </table>
 

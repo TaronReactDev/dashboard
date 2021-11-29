@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import EditBtn from "./shared buttons/editBtn";
-import DeleteBtn from "./shared buttons/deleteBtn";
-import {DataContext} from "./index";
+import EditBtn from "../shared buttons/editBtn";
+import DeleteBtn from "../shared buttons/deleteBtn";
+import {DataContext} from "../index";
 
 
 const DashboardBody = ({ el, handleViewOrEdit, handleDelete, isAdmin}) => {

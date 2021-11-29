@@ -88,13 +88,15 @@ const Registr = (props) => {
                   email,
                   password
               }
+              const arr = Object.values(registrationInfo).filter(el => !el);
+              if (arr.length === 0){
               try {
                   const registration = await axios.post(`/api/user/register`, registrationInfo);
                   console.log(registration.data)
 
               } catch (e) {
                   console.error(e)
-              }
+              }}
         }
 
     return (

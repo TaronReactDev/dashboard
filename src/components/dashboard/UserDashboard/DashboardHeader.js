@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DashboardHeader = (props) => {
+const DashboardHeader = ({isAdmin }) => {
     return (
         <tr>
             <th> ID</th>
@@ -11,7 +11,7 @@ const DashboardHeader = (props) => {
             <th> Gender</th>
             <th> Birthday</th>
             <th> Team</th>
-            {true ?  <th> Action</th> : ""}
+            {isAdmin ?  <th> Action</th> : ""}
         </tr>
     );
 }

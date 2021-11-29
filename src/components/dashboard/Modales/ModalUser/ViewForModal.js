@@ -4,8 +4,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import FemaleAvatar from "../../icon/avatar.png"
-import MaleAvatar from "../../icon/man.png"
+import FemaleAvatar from "../../../../icon/avatar.png"
+import MaleAvatar from "../../../../icon/man.png"
 
 
 export default function ViewForModal({viewOneUser}) {
@@ -16,7 +16,7 @@ export default function ViewForModal({viewOneUser}) {
                 <CardHeader
                     avatar={
                         <Avatar aria-label="recipe">
-                            {viewOneUser.gender === "male" ?
+                            {viewOneUser.gender.toLowerCase() === "male" ?
                                 <img src={MaleAvatar} style={{width: "30px"}} alt="avatar"/>
                                 :
                                 <img src={FemaleAvatar} alt="avatar" style={{width: "30px"}}/>}

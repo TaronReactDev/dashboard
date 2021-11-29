@@ -2,39 +2,27 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Button} from "@mui/material";
 import DashboardHeader from "./DashboardHeader";
 import DashboardBody from "./DashboardBody";
-import Modal from "./Modal";
-import ViewForModal from "./ViewForModal";
-import AddNewUser from "./AddNewUser";
-import EditForModal from "./EditForModal";
+import Modal from "../Modales/Modal";
+import ViewForModal from "../Modales/ModalUser/ViewForModal";
 import axios from "axios";
-import {DataContext} from "./index";
+import {DataContext} from "../index";
+import {Route, Switch, Link} from 'react-router-dom'
 
 
-const Dashboard = (props) => {
+const UsersTeamDB = (props) => {
 
-    const {userInfo} = useContext(DataContext)
-    console.log(userInfo)
-
-
-    const [addingModalShow, setAddingModalShow] = useState(false)
-    const [editModalShow, setEditModalShow] = useState(false)
+    const {userInfo, isAdmin, teamInfo} = useContext(DataContext)
     const [viewModalShow, setViewModalShow] = useState(false)
 
-    const [editedUser, setEditedUser] = useState("")
     const [viewOneUser, setViewOneUser] = useState("")
 
 
     const handleViewOrEdit = (id, actionType) => () => {
-        const filteredUser = userInfo.data.filter((el) => {
+        const filteredUser = teamInfo.filter((el) => {
             return el.Id == id
         });
 
         switch (actionType) {
-            case "edit" :
-                console.log(filteredUser[0])
-                setEditedUser(filteredUser[0]);
-                setEditModalShow(true);
-                break;
             case  "view":
                 setViewOneUser(filteredUser[0]);
                 setViewModalShow(true);
@@ -42,19 +30,9 @@ const Dashboard = (props) => {
     }
 
 
-    const handleAddNewUserModal = () => {
-        setAddingModalShow(true)
-    }
-
-
     const handleCancelBtn = (type) => () => {
+        console.log(type)
         switch (type) {
-            case "adding" :
-                setAddingModalShow((prev) => !prev);
-                break;
-            case "edit" :
-                setEditModalShow((prev) => !prev);
-                break;
             case "view" :
                 setViewModalShow((prev) => !prev);
                 break;
@@ -63,7 +41,6 @@ const Dashboard = (props) => {
 
 //**********   API    *********************************************
     const handleDelete = (id)  => {
-        console.log(id)
         try {
             fetch("/api/admin/delete", {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
@@ -89,22 +66,14 @@ const Dashboard = (props) => {
 
 
     return (
-        <div className="dashboard">
-
-            {userInfo.isAdmin ?    <Button variant="contained" onClick={handleAddNewUserModal}>
-                +add new user
-            </Button> : ""}
-
-
+        <div className="dashboard" style={{display: props.visible}}>
             <table className="dashboardtable">
                 <DashboardHeader/>
 
-
-
-                {userInfo.data.map(el => {
+                {teamInfo.map(el => {
                     return <DashboardBody
                         key={el.Id}
-                        el={el} handleDelete={() => handleDelete(el.Id)} handleViewOrEdit={handleViewOrEdit} isAdmin = {userInfo.isAdmin}/>
+                        el={el} handleDelete={() => handleDelete(el.Id)} handleViewOrEdit={handleViewOrEdit} isAdmin = {isAdmin}/>
                 })}
             </table>
 
@@ -119,29 +88,8 @@ const Dashboard = (props) => {
 
             </Modal>
 
-            <Modal modalShow={addingModalShow}>
-                <div className="modalContainer">
-                    <div className="modalContainer_background"
-                         onClick={handleCancelBtn("adding")}>
-                    </div>
-                    <AddNewUser handleCloseAddingNewUserModal={handleCancelBtn("adding")}/>
-                </div>
-
-            </Modal>
-
-
-            <Modal modalShow={editModalShow}>
-                <div className="modalContainer">
-                    <div className="modalContainer_background"
-                         onClick={handleCancelBtn("edit")}>
-                    </div>
-                    <EditForModal handleCloseEditingUserModal={handleCancelBtn("edit")} editedUser={editedUser}/>
-                </div>
-
-            </Modal>
-
         </div>
     );
 }
 
-export default Dashboard;
+export default UsersTeamDB;

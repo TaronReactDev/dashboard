@@ -5,7 +5,9 @@ export let validation = (value, type) => {
 
     switch (type) {
         case "username" :
-            return value.length > 3;
+            console.log(value.length)
+
+            return value.length >= 3;
         case "email" :
             return patternEmail.test(value);
             break;

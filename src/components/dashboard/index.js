@@ -1,7 +1,12 @@
 import React, {createContext, useEffect, useState} from 'react';
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar"
-import Dashboard from "./Dashboard";
+import Navbar from "./Menu/Navbar";
+import Sidebar from "./Menu/Sidebar"
+import SidebarForUser from "./Menu/SidebarForUser"
+
+
+import UsersDashboard from "./UserDashboard/UsersDashboard";
+import TeamDashboard from "./TeamDashboard/TeamDashboard";
+import UsersTeamDB from "./DashboardForUser/UsersTeamDB";
 
 export const DataContext = createContext(null)
 
@@ -9,8 +14,13 @@ export const DataContext = createContext(null)
 const Index = (props) => {
 
     const [userInfo, setUserInfo] = useState({})
+    const [teamInfo,setTeamInfo] = useState()
+    const [isAdmin,setIsAdmin] = useState()
     const [loading,setLoading] = useState(true)
-    // console.log(userInfo)
+    const [dashboard, setDashboard] = useState("user")
+
+
+
     const getDataWithToken = async ()=>{
         fetch("/token",{
             method:"POST",
@@ -19,7 +29,9 @@ const Index = (props) => {
                 'x-access-token': localStorage.token
             }
         }).then(res=>res.json()).then(data=> {
-            setUserInfo(data);
+            setIsAdmin(data.isAdmin);
+            setUserInfo(data.userData);
+            setTeamInfo(data.teamData);
             setLoading(false)
         })
     }
@@ -31,13 +43,17 @@ if (loading){
 }else {
 
     return (
-        <DataContext.Provider value={{userInfo, setUserInfo}}>
+        <DataContext.Provider value={{userInfo, setUserInfo, isAdmin, teamInfo}}>
         <div>
             <Navbar/>
-            <div className="containerForDashboard">
-                <Sidebar/>
-                <Dashboard/>
-            </div>
+            { isAdmin ? <div className="containerForDashboard">
+                    <Sidebar setDashboard={setDashboard}/>
+                    <UsersDashboard visible={dashboard === "user" ? '' : 'none'}/>
+                    <TeamDashboard visible={dashboard === "team" ? '' : 'none'}/>
+            </div> : <div className="containerForDashboard">
+                <SidebarForUser teamName={userInfo.team}/>
+                <UsersTeamDB />
+            </div>}
 
         </div>
 
@@ -46,4 +62,13 @@ if (loading){
 }
 }
 
+            {/*{if(isAdmin){*/}
+            {/*    return(*/}
+            {/*    <div className="containerForDashboard">*/}
+            {/*    <Sidebar setDashboard={setDashboard}/>*/}
+            {/*    <UsersDashboard visible={dashboard === "user" ? '' : 'none'}/>*/}
+            {/*    <TeamDashboard visible={dashboard === "team" ? '' : 'none'}/>*/}
+            {/*    </div>)*/}
+            {/*}*/}
+            {/*    }*/}
 export default Index;

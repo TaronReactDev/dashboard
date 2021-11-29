@@ -34,26 +34,27 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
          e.preventDefault();
 
-        const LoginInfo = {
-            username,
-            password
-        }
-        try {
-            const login = await axios.post(`/api/user/login`, LoginInfo)
-            if (login.data) {
-                window.localStorage.setItem("token", login.data.token)
-
-
-               if( username &&  password) {
-                   window.location.pathname = "/admin"
-               }
-
-
-
+        if(username.length !== 0 && password.length !== 0 && !errorUsername && !errorPassword){
+            const LoginInfo = {
+                username,
+                password
             }
+            try {
+                const login = await axios.post(`/api/user/login`, LoginInfo)
+                if (login.data) {
+                    window.localStorage.setItem("token", login.data.token)
 
-        } catch (e) {
-            console.error(e)
+
+                    if (username && password) {
+                        window.location.pathname = "/admin"
+                    }
+
+
+                }
+
+            } catch (e) {
+                console.error(e)
+            }
         }
     }
 

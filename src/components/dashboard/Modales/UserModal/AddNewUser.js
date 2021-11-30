@@ -9,14 +9,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import axios from "axios";
 import {DataContext} from "../../index";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 const AddNewUser = () => {
-    const {handleCancelBtn,teamInfo} = useContext(DataContext)
+    const {handleCancelBtn,teamInfo,setUserInfo} = useContext(DataContext)
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -55,10 +54,6 @@ const AddNewUser = () => {
     }
 
         const handleAddNewUser = async () => {
-            if( firstName && lastName && username && dateOfBirth && gender && team && email && password && confirmPassword &&
-                !errorFirstName && !errorLastName && !errorUsername && !errorEmail && !errorPassword && !errorConfirmPassword){
-                return
-            }
         const registrationInfo = {
             firstName,
             lastName,
@@ -69,13 +64,30 @@ const AddNewUser = () => {
             password,
             team
         }
+            const arr = Object.values(registrationInfo).filter(el => !el);
+            if (arr.length === 0 && !errorFirstName && !errorLastName && !errorUsername && !errorEmail && !errorPassword && !errorConfirmPassword){
         try {
-            const registration = await axios.post(`/api/user/register`, registrationInfo);
-
+            fetch("/api/admin/add", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(registrationInfo)
+            }).then(res => res.json()).then(data => {
+                if (!data.isUniqeUsername){
+                    alert(`This Username is alredy used`)
+                    return;
+                }
+                if (!data.isUniqeEmail){
+                    alert(`This Email is alredy used`)
+                    return;
+                }
+                setUserInfo(data.userData);
+            })
             handleCancelAddingNewUser()
         } catch (e) {
             console.error(e)
-        }
+        }}else { handleCancelAddingNewUser()}
     }
 
     const handleChangeRegistration = (type) => (e) => {
@@ -125,7 +137,9 @@ const AddNewUser = () => {
 
 
     const handleCancelAddingNewUser = () => {
-        handleCancelBtn("adding")
+
+handleCancelBtn("adding")
+        console.log("sadasdsad")
         clearState()
     }
 
@@ -195,13 +209,6 @@ const AddNewUser = () => {
 
                         </Select>
                     </FormControl>
-
-
-
-
-
-
-
 
                     <TextField error={errorEmail}
                                label="Email" variant="standard" value={email}

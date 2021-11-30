@@ -41,7 +41,7 @@ const UsersDashboard = (props) => {
             <Modal modalShow={viewModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("view")}>
+                         onClick={()=>handleCancelBtn("view")}>
                     </div>
                     <ViewForModal />
                 </div>
@@ -50,7 +50,7 @@ const UsersDashboard = (props) => {
             <Modal modalShow={addingModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("adding")}>
+                         onClick={()=>handleCancelBtn("adding")}>
                     </div>
                     <AddNewUser />
                 </div>
@@ -59,7 +59,7 @@ const UsersDashboard = (props) => {
             <Modal modalShow={editModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("edit")}>
+                         onClick={()=>handleCancelBtn("edit")}>
                     </div>
                     <EditForModal  editedUser={editedUser}/>
                 </div>

@@ -20,8 +20,10 @@ const DashboardBody = ({el}) => {
 
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{Id}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>
+
+                { dateOfBirthArray[1] > dateMonth && dateOfBirthArray[1] - dateMonth <= 1 && dateDay - dateOfBirthArray[2] <= 30 ? < img alt="Crown" src={Crown}
+                                                                                                                                         style={{width:"15px", marginRight:"10px"}} />  : ""}
                 {firstName}
-                {dateMonth - dateOfBirthArray[1] <= 1 && dateDay - dateOfBirthArray[2] <= 30 ? < img alt="Crown" src={Crown}/> : ""}
             </td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{lastName}</td>
             <td className="uniqueQuestionItem" onClick={handleViewOrEdit(Id, "view")}>{username}</td>

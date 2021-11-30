@@ -11,7 +11,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 const EditTeamModal = () => {
 
-    const {handleCancelBtn, editedTeam} = useContext(DataContext)
+
+    const {handleCancelBtn, editedTeam,setTeamInfo} = useContext(DataContext)
 
     const [name, setName] = useState("")
     const [maxCountOfMembers, setMaxCountOfMembers] = useState("")
@@ -48,9 +49,16 @@ const EditTeamModal = () => {
             maxCountOfMembers
         }
         try {
-            const edit = await axios.put(`/api/admin/editTeam`, editInfo);
+            fetch("/api/admin/editTeam", {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editInfo)
+            }).then(res => res.json()).then(data => {
+                setTeamInfo(data.teamData);
+            })
             handleCancelBtn("edit")
-            window.location.reload();
         } catch (e) {
             console.error(e)
         }

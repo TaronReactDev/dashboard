@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {validation} from "./../validation/validationFunction";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -11,10 +11,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-import axios from "axios";
+
 
 
 const Registr = (props) => {
+
+    const history = useHistory()
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -78,10 +80,6 @@ const Registr = (props) => {
 
     const handleRegistration = async () => {
 
-       if( firstName && lastName && username && dateOfBirth && gender && email && password && confirmPassword &&
-           !errorFirstName && !errorLastName && !errorUsername && !errorEmail && !errorPassword && !errorConfirmPassword){
-           return
-       }
 
               const registrationInfo = {
                   firstName,
@@ -93,9 +91,25 @@ const Registr = (props) => {
                   password
               }
               const arr = Object.values(registrationInfo).filter(el => !el);
-              if (arr.length === 0){
+        if (arr.length === 0 && !errorFirstName && !errorLastName && !errorUsername && !errorEmail && !errorPassword && !errorConfirmPassword){
               try {
-                  const registration = await axios.post(`/api/user/register`, registrationInfo);
+                  fetch("/api/user/register", {
+                      method: "POST",
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(registrationInfo)
+                  }).then(res => res.json()).then(data => {
+                      if (!data.isUniqeUsername){
+                          alert(`This Username is alredy used`)
+                          return;
+                      }
+                      if (!data.isUniqeEmail){
+                          alert(`This Email is alredy used`)
+                          return;
+                      }
+                      history.push("/")
+                  })
 
               } catch (e) {
                   console.error(e)

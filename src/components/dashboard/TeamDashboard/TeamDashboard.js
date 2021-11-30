@@ -41,7 +41,7 @@ function TeamDashboard(props) {
             <Modal modalShow={viewModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("view")}>
+                         onClick={()=>handleCancelBtn("view")}>
                     </div>
                     <ViewTeamModal/>
                 </div>
@@ -51,7 +51,7 @@ function TeamDashboard(props) {
             <Modal modalShow={creatNewTeamModal}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("creat")}>
+                         onClick={()=>handleCancelBtn("creat")}>
                     </div>
                     <CreateNewTeam/>
                 </div>
@@ -61,7 +61,7 @@ function TeamDashboard(props) {
             <Modal modalShow={editModalShow}>
                 <div className="modalContainer">
                     <div className="modalContainer_background"
-                         onClick={handleCancelBtn("edit")}>
+                         onClick={()=>handleCancelBtn("edit")}>
                     </div>
                     <EditTeamModal/>
                 </div>

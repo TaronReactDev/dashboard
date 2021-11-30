@@ -17,7 +17,7 @@ import {DataContext} from "../../index";
 
 const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
 
-    const {teamInfo, handleCancelBtn} = useContext(DataContext)
+    const {teamInfo, handleCancelBtn, setUserInfo} = useContext(DataContext)
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -62,10 +62,6 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
     }
 
     const handleSaveEdit = async () => {
-        if( firstName && lastName && username && dateOfBirth && gender && team && email &&
-            !errorFirstName && !errorLastName && !errorUsername && !errorEmail ){
-            return
-        }
         const editInfo = {
             Id: editedUser.Id,
             firstName,
@@ -76,13 +72,22 @@ const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
             email,
             team
         }
-        try {
-            const edit = await axios.put(`/api/admin/edit`, editInfo);
+        const arr = Object.values(editInfo).filter(el => !el);
+        if (arr.length === 0 && !errorFirstName && !errorLastName && !errorUsername && !errorEmail){
+            try {
+                fetch("/api/admin/edit", {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editInfo)
+                }).then(res => res.json()).then(data => {
+                    setUserInfo(data.userData);
+                })
             handleCancelBtn("edit");
-            window.location.reload();
         } catch (e) {
             console.error(e)
-        }
+        }}
     }
 
     const handleChangeRegistration = (type) => (e) => {

@@ -47,7 +47,8 @@ const Index = (props) => {
     useEffect(getDataWithToken, [])
 
 
-    const handleCancelBtn = (type) => () => {
+    const handleCancelBtn = (type)  => {
+        console.log(type)
         switch (type) {
             case "adding" :
                 setAddingModalShow((prev) => !prev);
@@ -104,7 +105,7 @@ const Index = (props) => {
         setCreatNewTeamModal(true)
     }
 
-    const handleDelete = (id, url) => {
+    const handleDelete = (id, url) =>()=> {
         try {
             fetch(`${url}`, {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
@@ -117,6 +118,13 @@ const Index = (props) => {
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer',
                 body: JSON.stringify({Id: id})
+            }).then(res => res.json()).then(data => {
+                if (url === "/api/admin/delete"){
+                    setUserInfo(data.userData);
+                }
+                else if (url === "/api/admin/deleteTeam"){
+                setTeamInfo(data.teamData)
+                }
             })
         } catch (e) {
             console.error(e)
@@ -127,7 +135,6 @@ const Index = (props) => {
     if (loading) {
         return (<div>Loading ...</div>)
     } else {
-
         return (
             <DataContext.Provider value={
                 {
@@ -135,6 +142,7 @@ const Index = (props) => {
                     setUserInfo,
                     isAdmin,
                     teamInfo,
+                    setTeamInfo,
                     handleAddNewUserModal,
                     handleViewOrEdit,
                     viewModalShow,

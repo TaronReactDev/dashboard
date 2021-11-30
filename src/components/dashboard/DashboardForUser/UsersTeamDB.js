@@ -3,7 +3,7 @@ import {Button} from "@mui/material";
 import DashboardHeader from "./DashboardHeader";
 import DashboardBody from "./DashboardBody";
 import Modal from "../Modales/Modal";
-import ViewForModal from "../Modales/ModalUser/ViewForModal";
+import ViewForModal from "../Modales/UserModal/ViewForModal";
 import axios from "axios";
 import {DataContext} from "../index";
 import {Route, Switch, Link} from 'react-router-dom'

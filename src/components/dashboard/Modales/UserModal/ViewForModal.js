@@ -6,9 +6,13 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FemaleAvatar from "../../../../icon/avatar.png"
 import MaleAvatar from "../../../../icon/man.png"
+import {useContext} from "react";
+import {DataContext} from "../../index";
 
 
-export default function ViewForModal({viewOneUser}) {
+export default function ViewForModal() {
+
+    const {viewOneUser} = useContext(DataContext)
     return (
 
         <div className="formContainer">
@@ -28,9 +32,9 @@ export default function ViewForModal({viewOneUser}) {
 
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        username - {viewOneUser.username}
+                        User Name - {viewOneUser.username}
                     </Typography> <Typography variant="body2" color="text.secondary">
-                    Email - {viewOneUser.email}
+                        Email - {viewOneUser.email}
                 </Typography>
                     <Typography variant="body2" color="text.secondary">
                         Team - {viewOneUser.team}

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {DataContext} from "../index";
 
-const DashboardHeader = ({isAdmin }) => {
+const DashboardHeader = ( ) => {
+    const{isAdmin}= useContext(DataContext)
     return (
         <tr>
             <th> ID</th>
@@ -11,6 +13,7 @@ const DashboardHeader = ({isAdmin }) => {
             <th> Gender</th>
             <th> Birthday</th>
             <th> Team</th>
+            {isAdmin ?  <th> How Many Days Until My Birthday</th> : ""}
             {isAdmin ?  <th> Action</th> : ""}
         </tr>
     );

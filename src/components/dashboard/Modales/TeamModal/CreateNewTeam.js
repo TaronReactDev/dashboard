@@ -3,22 +3,14 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {validation} from "../../../validation/validationFunction";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
 import axios from "axios";
 import {DataContext} from "../../index";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 
-const CreateNewTeam = ({handleCloseCreateingTeamModal}) => {
-    const {teamInfo} = useContext(DataContext)
+const CreateNewTeam = () => {
+
+    const {handleCancelBtn} = useContext(DataContext)
 
     const [name, setName] = useState("")
     const [maxCountOfMembers, setMaxCountOfMembers] = useState("")
@@ -26,25 +18,33 @@ const CreateNewTeam = ({handleCloseCreateingTeamModal}) => {
     const [errorTeamName, setErrorTeamName] = useState("")
     const [errorMaxCountOfMembers, setErrorMaxCountOfMembers] = useState("")
 
+    const clearState = () => {
+        setName("");
+        setMaxCountOfMembers("");
 
-// *************   API    **********************
+        setErrorTeamName("");
+        setErrorMaxCountOfMembers("");
+
+    }
+
     const handleCreatNewTeam = async () => {
 
+        if( name && maxCountOfMembers  && !errorTeamName && !errorMaxCountOfMembers){
+            return
+        }
         const registrationInfo = {
             name,
             maxCountOfMembers
         }
         try {
             const registration = await axios.post(`/api/admin/addTeam`, registrationInfo);
-
             handleCancelCreatNewTeam()
+
         } catch (e) {
             console.error(e)
         }
-
     }
 
-    // *************   API    **********************
 
     const handleChangeTeamInfo = (type) => (e) => {
         switch (type) {
@@ -56,25 +56,13 @@ const CreateNewTeam = ({handleCloseCreateingTeamModal}) => {
             case "maxCountOfMembers" :
                 setMaxCountOfMembers(e.target.value);
                 e.target.value  ? setErrorMaxCountOfMembers(false) : setErrorMaxCountOfMembers(true);
-                break;
-
-
+               break;
         }
     }
 
-
     const handleCancelCreatNewTeam = () => {
-        console.log("sadasd")
-        handleCloseCreateingTeamModal()
+        handleCancelBtn("creat")
         clearState()
-    }
-    const clearState = () => {
-        setName("");
-        setMaxCountOfMembers("");
-
-        setErrorTeamName("");
-        setErrorMaxCountOfMembers("");
-
     }
 
 

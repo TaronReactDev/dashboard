@@ -78,6 +78,10 @@ const Registr = (props) => {
 
     const handleRegistration = async () => {
 
+       if( firstName && lastName && username && dateOfBirth && gender && email && password && confirmPassword &&
+           !errorFirstName && !errorLastName && !errorUsername && !errorEmail && !errorPassword && !errorConfirmPassword){
+           return
+       }
 
               const registrationInfo = {
                   firstName,
@@ -92,7 +96,6 @@ const Registr = (props) => {
               if (arr.length === 0){
               try {
                   const registration = await axios.post(`/api/user/register`, registrationInfo);
-                  console.log(registration.data)
 
               } catch (e) {
                   console.error(e)

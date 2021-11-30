@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import {DataContext} from "../index";
 
-const TeamDashboardHeader = ({isAdmin}) => {
+const TeamDashboardHeader = () => {
+    const{isAdmin}= useContext(DataContext)
+
     return(
         <tr>
             <th> Id </th>

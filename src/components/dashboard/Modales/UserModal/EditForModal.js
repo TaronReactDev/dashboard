@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -9,15 +9,15 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import axios from "axios";
 import {DataContext} from "../../index";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
-const AddNewUser = ({handleCloseAddingNewUserModal}) => {
-    const {teamInfo} = useContext(DataContext)
+const EditForModal = ({handleCloseEditingUserModal, editedUser}) => {
+
+    const {teamInfo, handleCancelBtn} = useContext(DataContext)
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -26,43 +26,64 @@ const AddNewUser = ({handleCloseAddingNewUserModal}) => {
     const [gender, setGender] = useState("")
     const [team, setTeam] = useState("")
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-
 
     const [errorFirstName, setErrorFirstName] = useState("")
     const [errorLastName, setErrorLastName] = useState("")
     const [errorUsername, setErrorUsername] = useState("")
     const [errorEmail, setErrorEmail] = useState("")
-    const [errorPassword, setErrorPassword] = useState("")
-    const [errorConfirmPassword, setErrorConfirmPassword] = useState("")
 
-// *************   API    **********************
-    const handleAddNewUser = async () => {
+    useEffect(() => {
+        const {Id, firstName, lastName, username, dateOfBirth, gender, team, email} = editedUser;
 
-        const registrationInfo = {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setUsername(username);
+        setDateOfBirth(dateOfBirth);
+        setGender(gender);
+        setTeam(team);
+        setEmail(email);
+
+    }, [])
+
+    const clearState = () => {
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setDateOfBirth("");
+        setGender("");
+        setTeam("");
+        setEmail("");
+
+        setErrorFirstName("");
+        setErrorLastName("");
+        setErrorUsername("");
+        setErrorEmail("");
+
+    }
+
+    const handleSaveEdit = async () => {
+        if( firstName && lastName && username && dateOfBirth && gender && team && email &&
+            !errorFirstName && !errorLastName && !errorUsername && !errorEmail ){
+            return
+        }
+        const editInfo = {
+            Id: editedUser.Id,
             firstName,
             lastName,
             username,
             dateOfBirth,
             gender,
             email,
-            password,
             team
         }
-
-
         try {
-            const registration = await axios.post(`/api/user/register`, registrationInfo);
-
-            handleCancelAddingNewUser()
+            const edit = await axios.put(`/api/admin/edit`, editInfo);
+            handleCancelBtn("edit");
+            window.location.reload();
         } catch (e) {
             console.error(e)
         }
-
     }
-
-    // *************   API    **********************
 
     const handleChangeRegistration = (type) => (e) => {
         switch (type) {
@@ -97,43 +118,13 @@ const AddNewUser = ({handleCloseAddingNewUserModal}) => {
                 setEmail(e.target.value);
                 validation(email, "email") ? setErrorEmail(false) : setErrorEmail(true);
                 break;
-
-            case "password" :
-                setPassword(e.target.value);
-                validation(password, "password") ? setErrorPassword(false) : setErrorPassword(true);
-                break;
-            case "confirmPassword" :
-                setConfirmPassword(e.target.value);
-                validation(confirmPassword, "confirmPassword") ? setErrorConfirmPassword(false) : setErrorConfirmPassword(true);
-                break;
         }
     }
 
-
-    const handleCancelAddingNewUser = () => {
-        console.log("aaaaa")
-        handleCloseAddingNewUserModal()
+    const handleCloseEditingModal = () => {
+        handleCancelBtn("edit")
         clearState()
     }
-    const clearState = () => {
-        setFirstName("");
-        setLastName("");
-        setUsername("");
-        setDateOfBirth("");
-        setGender("");
-        setTeam("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-
-        setErrorFirstName("");
-        setErrorLastName("");
-        setErrorUsername("");
-        setErrorEmail("");
-        setErrorPassword("");
-        setErrorConfirmPassword("");
-    }
-
 
     return (
         <div className="formContainer">
@@ -146,46 +137,41 @@ const AddNewUser = ({handleCloseAddingNewUserModal}) => {
                 autoComplete="off"
             >
                 <div style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
-
                     <TextField error={errorFirstName} label="First Name" variant="standard" value={firstName}
                                onChange={handleChangeRegistration("firstName")}
                                helperText={errorFirstName ? "first name can't be empty." : ""}
                     />
-
                     <TextField error={errorLastName} label="Last Name" variant="standard" value={lastName}
                                onChange={handleChangeRegistration("lastName")}
                                helperText={errorLastName ? "last name can't be empty." : ""}/>
-
                     <TextField error={errorUsername} label="User Name" variant="standard" value={username}
                                onChange={handleChangeRegistration("username")}
                                helperText={errorUsername ? "User name user name must be 3 or more characters" : ""}
                     />
-
                     <TextField
                         label="Birthday" variant="standard" value={dateOfBirth}
                         type="date"
-                        defaultValue="2017-05-24"
+                        defaultValue={dateOfBirth}
                         onChange={handleChangeRegistration("dateOfBirth")} autoComplete
                         sx={{width: 220}}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
-
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Gender</FormLabel>
                         <RadioGroup row aria-label="gender" name="row-radio-buttons-group"
                                     onChange={handleChangeRegistration("gender")}>
 
-                            <FormControlLabel value="female" control={<Radio/>} label="Female"/>
-                            <FormControlLabel value="male" control={<Radio/>} label="Male"/>
+                            <FormControlLabel value="female" control={<Radio/>} label="Female"
+                                              checked={gender.toLowerCase() === "female"}/>
+                            <FormControlLabel value="male" control={<Radio/>} label="Male"
+                                              checked={gender.toLowerCase() === "male"}/>
                         </RadioGroup>
                     </FormControl>
 
 
-
-
-                    <FormControl variant="standard" sx={{ m: 1, minWidth: 215 }}>
+                    <FormControl variant="standard" sx={{m: 1, minWidth: 215}}>
                         <InputLabel id="demo-simple-select-standard-label">Team</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"
@@ -195,55 +181,28 @@ const AddNewUser = ({handleCloseAddingNewUserModal}) => {
                             onChange={handleChangeRegistration("team")}
                         >
 
-                            {teamInfo.map(el =>  <MenuItem value={el.name}>{el.name}</MenuItem>)}
+                            {teamInfo.map(el => <MenuItem value={el.name}>{el.name}</MenuItem>)}
+
 
                         </Select>
                     </FormControl>
-
-
-
-
-
-
 
 
                     <TextField error={errorEmail}
                                label="Email" variant="standard" value={email}
                                onChange={handleChangeRegistration("email")}
                                helperText={errorEmail ? "invalid email address" : ""}
-
-                    />
-                    <TextField
-                        error={errorPassword}
-                        label="Password"
-                        type="password"
-                        variant="standard"
-                        value={password} onChange={handleChangeRegistration("password")}
-                        helperText={errorPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
-                    />
-                    <TextField
-                        error={errorConfirmPassword}
-                        label="Confirm Password"
-                        type="password"
-                        variant="standard"
-                        value={confirmPassword} onChange={handleChangeRegistration("confirmPassword")}
-                        helperText={errorConfirmPassword ? "password must be at least 8 characters with 1 upper case letter and 1 number" : ""}
-
                     />
                 </div>
-
             </Box>
 
             <Stack spacing={2} direction="column">
                 <Button variant="text"
-                        onClick={handleAddNewUser}> Add </Button>
-                <Button variant="text" onClick={handleCancelAddingNewUser}> Cancel </Button>
+                        onClick={handleSaveEdit}> Save Edit </Button>
+                <Button variant="text" onClick={handleCloseEditingModal}> Cancel </Button>
             </Stack>
         </div>
     );
 }
 
-export default AddNewUser;
-
-
-
+export default EditForModal;

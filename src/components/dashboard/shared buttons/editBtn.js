@@ -2,10 +2,10 @@ import React from 'react';
 import  Edit from "./png/edit.png"
 
 
-const EditBtn= ({text,handleViewOrEdit, id, type}) => {
+const EditBtn= ({text,handleViewOrEdit}) => {
   return (
     <button
-      onClick={handleViewOrEdit(id, type)}
+      onClick={handleViewOrEdit}
     > <img alt={text}   src={Edit} />
     </button>
   );

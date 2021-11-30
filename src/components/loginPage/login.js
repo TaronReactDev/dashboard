@@ -34,7 +34,7 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
          e.preventDefault();
 
-        if(username.length !== 0 && password.length !== 0 && !errorUsername && !errorPassword){
+        if(username && password && !errorUsername && !errorPassword){
             const LoginInfo = {
                 username,
                 password
